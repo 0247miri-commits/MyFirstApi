@@ -15,7 +15,7 @@ namespace MyApiProject.Controllers
 
         //The id should come from the route (GET api/My/5), so write [HttpGet("{id}")].
         //Now it is read from the query string (api/My?id=5)
-        [HttpGet]
+        [HttpGet("{id}")]
         public ActionResult<UserDetails> Get(int id)
         {
             using (StreamReader reader = System.IO.File.OpenText("file.txt"))
@@ -66,10 +66,10 @@ namespace MyApiProject.Controllers
 
         }
         [HttpPost("passwordStrength")]
-        public IActionResult Post([FromBody] Password password)
+        public IActionResult Post([FromBody] PasswordToCheck userPassword)
         {
 
-            var result = Core.EvaluatePassword(password.Password_);
+            var result = Core.EvaluatePassword(userPassword.Password);
 
             int score = result.Score;                  
             var warning = result.Feedback.Warning;
