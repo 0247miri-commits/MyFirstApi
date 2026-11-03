@@ -50,11 +50,11 @@ updateButton.addEventListener('click', async () => {
         firstName: firstN.value,
         lastName: lastN.value,
         userId: id,
-        body: "User updated details ",
-        title: "Updating a user"
+        // body: "User updated details ",
+        // title: "Updating a user"
     }
     console.log(dataPut)
-    const response = await fetch('/api/My/'+id,
+    const response = await fetch('/api/User/'+id,
         {
             method: 'PUT',
             headers: {
@@ -88,12 +88,11 @@ passwordStrength.addEventListener('click', async (e) => {
 
 
     const postData = {
-        password_: psswrd.value,
-        title: 'Check passwords strength',
-        body: 'This is a sub validation action'
+        password: psswrd.value,
+       
 
     };
-    const response = await fetch('/api/My/passwordStrength',
+    const response = await fetch('/api/User/passwordStrength',
         {
             method: 'POST',
             headers: {
@@ -105,18 +104,19 @@ passwordStrength.addEventListener('click', async (e) => {
 
     let score = 0;
     const dataPost = await response.json()
-    if (!response.ok) {
-        score = dataPost.score;
-        const message = dataPost.message;
-        const suggestions = dataPost.suggestions;
-        const warning = dataPost.warning;
-        alert("message:" + message + "suggestions: " + suggestions + "warning: " + warning)
-    }
-    else {
-        score = dataPost.score;
-        const message = dataPost.message;
-        alert("message:" + message)
-    }
+    alert(response)
+    // if (!response.ok) {
+    //     score = dataPost.score;
+    //     const message = dataPost.message;
+    //     const suggestions = dataPost.suggestions;
+    //     const warning = dataPost.warning;
+    //     alert("message:" + message + "suggestions: " + suggestions + "warning: " + warning)
+    // }
+    // else {
+    //     score = dataPost.score;
+    //     const message = dataPost.message;
+    //     alert("message:" + message)
+    // }
 
     progressPassword.value = score;
 

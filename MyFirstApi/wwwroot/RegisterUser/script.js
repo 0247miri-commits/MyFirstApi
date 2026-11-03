@@ -24,11 +24,10 @@ registerButton.addEventListener('click', async (e) => {
             password: psswrd.value,
             firstName: firstN.value,
             lastName: lastN.value,
-            title: 'register, user details',
-            body: 'This is a register action'
+           
         
     };
-    const response = await fetch('/api/My/register',
+    const response = await fetch('/api/User/register',
         {
             method: 'POST',
             headers: {
@@ -58,12 +57,12 @@ passwordStrength.addEventListener('click',async (e) => {
 
   
     const postData = {
-        password_: psswrd.value,
-        title: 'Check passwords strength',
-        body: 'This is a sub validation action'
+        password: psswrd.value,
+        // title: 'Check passwords strength',
+        // body: 'This is a sub validation action'
 
     };
-    const response = await fetch('/api/My/passwordStrength',
+    const response = await fetch('/api/User/passwordStrength',
         {
             method: 'POST',
             headers: {
@@ -107,11 +106,11 @@ loginButton.addEventListener('click', async (e) => {
     const postData = {
         email: emailLog.value,
         password: psswrdLog.value,
-        title: 'login, user details',
-        body: 'This is a login action'
+        // title: 'login, user details',
+        // body: 'This is a login action'
 
     };
-    const response = await fetch('/api/My/login',
+    const response = await fetch('/api/User/login',
         {
             method: 'POST',
             headers: {
