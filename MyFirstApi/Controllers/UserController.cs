@@ -13,7 +13,12 @@ namespace MyApiProject.Controllers
     
     public class UserController : ControllerBase
     {
-        private UserService _service = new UserService();
+        private IUserService _service;
+        public UserController(IUserService userService)
+        {
+            _service = userService;.
+            
+        }
         //Now it is read from the query string (api/User?id=5)
         [HttpGet("{id}")]
         public ActionResult<UserDetails> Get(int id)
