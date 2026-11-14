@@ -7,6 +7,7 @@ using Zxcvbn;
 
 namespace Service
 {
+    //Program.cs registers IUserService for UserService, but UserService doesn't implement it: which interface should it implement?
     public class UserService
     {
         private UserRepository _repository = new UserRepository();
