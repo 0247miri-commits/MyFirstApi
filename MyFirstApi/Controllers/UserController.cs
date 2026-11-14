@@ -14,6 +14,7 @@ namespace MyApiProject.Controllers
     public class UserController : ControllerBase
     {
         private IUserService _service;
+        //The build fails with CS1513 (} expected) around the constructor: look for a stray character after a statement there
         public UserController(IUserService userService)
         {
             _service = userService;.
@@ -68,6 +69,7 @@ namespace MyApiProject.Controllers
             }
             int id = _service.UserExistsInSystem(loginDetails);
            if (id==-1)
+            //The assignment asks login with a wrong password to return 204 NoContent: what does this return now?
             return NotFound("User Details don't exist");
           UserDetails user = _service.GetUser(id);
            return Ok(user);
@@ -76,6 +78,7 @@ namespace MyApiProject.Controllers
 
         // עדכון פרטים למשתמש
         [HttpPut("{id}")]
+        //The assignment asks PUT to return Ok(): change void to IActionResult and return Ok() at the end
         public void Put(int id,[FromBody] UserDetails userToUpdate)
         {
             _service.UpdateUserInSystem(id, userToUpdate);
