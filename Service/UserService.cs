@@ -7,6 +7,7 @@ using Zxcvbn;
 
 namespace Service
 {
+    //Where is the IUserService interface? UserService should implement it, and the controller and password checks should take that interface
     public class UserService
     {
         private UserRepository _repository = new UserRepository();

@@ -16,6 +16,7 @@ namespace MyApiProject.Controllers
         private IUserService _service;
         public UserController(IUserService userService)
         {
+            //Stray '.' at the end of this line: remove it, the project doesn't build
             _service = userService;.
             
         }
@@ -76,6 +77,7 @@ namespace MyApiProject.Controllers
 
         // עדכון פרטים למשתמש
         [HttpPut("{id}")]
+        //The assignment asks PUT to return Ok(): change void to IActionResult and return Ok() at the end
         public void Put(int id,[FromBody] UserDetails userToUpdate)
         {
             _service.UpdateUserInSystem(id, userToUpdate);
