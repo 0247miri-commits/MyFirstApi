@@ -104,6 +104,7 @@ passwordStrength.addEventListener('click', async (e) => {
 
     let score = 0;
     const dataPost = await response.json()
+    //Which value should the strength check show? response is the HTTP response, and score is never set, so the bar stays at 0
     alert(response)
     // if (!response.ok) {
     //     score = dataPost.score;
