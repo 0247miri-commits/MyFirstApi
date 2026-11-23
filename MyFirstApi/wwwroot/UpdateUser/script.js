@@ -3,8 +3,8 @@ const updateButton = document.querySelector("#updateButton")
 const updateDetails = document.querySelector("#updateDetails")
 const email = document.querySelector("#email")
 const psswrd = document.querySelector("#password")
-const firstN = document.querySelector("#firstName")
-const lastN = document.querySelector("#lastName")
+const firstName = document.querySelector("#firstName")
+const lastName = document.querySelector("#lastName")
 const progressPassword = document.querySelector("progress")
 const passwordStrength = document.getElementById("passwordStrength")
 
@@ -12,11 +12,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     
     
     const dataPost = await JSON.parse(localStorage.getItem('dataPost'))
-    const firstName = dataPost['firstName']
+    const firstname = dataPost['first_name']
     
     const enterMessage = document.getElementById('enterMessage')
 
-    enterMessage.textContent = `שלום ${firstName}, מייד נצלול פנימה`
+    enterMessage.textContent = `שלום ${firstname}, מייד נצלול פנימה`
 
 })
 function updatDetailsButton() {
@@ -34,7 +34,7 @@ function updatDetailsButton() {
 
 updateButton.addEventListener('click', async () => {
     try {
-        if (psswrd.value.length < 4 || firstN.value.length < 2 || lastN.value.length < 2)
+        if (psswrd.value.length < 4 || firstName.value.length < 2 || lastName.value.length < 2)
             throw Error("Unvalid details!")
     }
     catch (Error) {
@@ -42,14 +42,14 @@ updateButton.addEventListener('click', async () => {
         return;
     }
     const dataPost = await JSON.parse(localStorage.getItem('dataPost'))
-    const id = dataPost['userId']
+    const id = dataPost['id']
     const dataPut =
     {
         email: email.value,
         password: psswrd.value,
-        firstName: firstN.value,
-        lastName: lastN.value,
-        userId: id,
+        firstName: firstName.value,
+        lastName: lastName.value,
+        Id: id,
         // body: "User updated details ",
         // title: "Updating a user"
     }
@@ -89,8 +89,6 @@ passwordStrength.addEventListener('click', async (e) => {
 
     const postData = {
         password: psswrd.value,
-       
-
     };
     const response = await fetch('/api/User/passwordStrength',
         {
@@ -104,19 +102,19 @@ passwordStrength.addEventListener('click', async (e) => {
 
     let score = 0;
     const dataPost = await response.json()
-    alert(response)
-    // if (!response.ok) {
-    //     score = dataPost.score;
-    //     const message = dataPost.message;
-    //     const suggestions = dataPost.suggestions;
-    //     const warning = dataPost.warning;
-    //     alert("message:" + message + "suggestions: " + suggestions + "warning: " + warning)
-    // }
-    // else {
-    //     score = dataPost.score;
-    //     const message = dataPost.message;
-    //     alert("message:" + message)
-    // }
+    // alert(response)
+    if (!response.ok) {
+        score = dataPost.score;
+        const message = dataPost.massage;
+        const suggestions = dataPost.suggestions;
+        const warning = dataPost.warning;
+        alert("massage:" + massage + "suggestions: " + suggestions + "warning: " + warning)
+    }
+    else {
+        score = dataPost.score;
+        const massage = dataPost.massage;
+        alert("massage:" + massage)
+    }
 
     progressPassword.value = score;
 

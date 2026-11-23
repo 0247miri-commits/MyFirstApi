@@ -16,21 +16,21 @@ namespace MyApiProject.Controllers
         private IUserService _service;
         public UserController(IUserService userService)
         {
-            _service = userService;.
+            _service = userService;
             
         }
         //Now it is read from the query string (api/User?id=5)
         [HttpGet("{id}")]
-        public ActionResult<UserDetails> Get(int id)
+        public async Task<ActionResult<User>> Get(int id)
         {
-            UserDetails user = _service.GetUser(id);
+            User user = await _service.GetUser(id);
             if (user!=null)
                 return Ok(user);
             return NotFound("A user hadn't found");
 
         }
         [HttpPost("register")]
-        public ActionResult<UserDetails> Post([FromBody] UserDetails userDetails)
+        public async Task<ActionResult<User>> Post([FromBody] User userDetails)
         {
             if (!ModelState.IsValid) // Check if the validation checks passed
             {
@@ -41,11 +41,11 @@ namespace MyApiProject.Controllers
                 return BadRequest("Check your password strength");
 
             // נבצע בדיקה שהמייל אינו קיים במערכת עדיין
-            if (!_service.UniqueUser(userDetails))
+            if (!await _service.UniqueUser(userDetails))
                 return BadRequest("Your Email is inside the system already");
-            _service.InsertUser(userDetails);
+            await _service.InsertUser(userDetails);
            
-            return CreatedAtAction(nameof(Get), new { id = userDetails.UserId }, userDetails);
+            return CreatedAtAction(nameof(Get), new { id = userDetails.Id }, userDetails);
 
 
 
@@ -60,23 +60,23 @@ namespace MyApiProject.Controllers
         }
 
         [HttpPost("login")]
-        public ActionResult<UserDetails> Post([FromBody] LoginDetails loginDetails)
+        public async Task<ActionResult<User>> Post([FromBody] LoginDetails loginDetails)
         {
             if (!ModelState.IsValid) //  Check if the validation checks passed
             {
                 return BadRequest(ModelState);
             }
-            int id = _service.UserExistsInSystem(loginDetails);
+            int id =await _service.UserExistsInSystem(loginDetails);
            if (id==-1)
             return NotFound("User Details don't exist");
-          UserDetails user = _service.GetUser(id);
+          User user = await _service.GetUser(id);
            return Ok(user);
 
         }
 
         // עדכון פרטים למשתמש
         [HttpPut("{id}")]
-        public void Put(int id,[FromBody] UserDetails userToUpdate)
+        public async Task Put(int id,[FromBody] User userToUpdate)
         {
             _service.UpdateUserInSystem(id, userToUpdate);
            

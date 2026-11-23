@@ -1,7 +1,7 @@
 ﻿const email = document.querySelector("#email")
 const psswrd = document.querySelector("#password")
-const firstN = document.querySelector("#firstName")
-const lastN = document.querySelector("#lastName")
+const firstN = document.querySelector("#First_Name")
+const lastN = document.querySelector("#Last_Name")
 const registerButton = document.querySelector("#registerButton")
 const passwordStrength = document.getElementById("passwordStrength")
 const emailLog = document.querySelector("#emailLogin")
@@ -22,8 +22,8 @@ registerButton.addEventListener('click', async (e) => {
         const postData = {
             email: email.value,
             password: psswrd.value,
-            firstName: firstN.value,
-            lastName: lastN.value,
+            First_Name: firstN.value,
+            Last_Name: lastN.value,
            
         
     };
@@ -79,12 +79,12 @@ passwordStrength.addEventListener('click',async (e) => {
        const message = dataPost.message;
         const suggestions = dataPost.suggestions;
         const warning = dataPost.warning;
-        alert("message:" + message + "suggestions: " + suggestions + "warning: "+warning)
+        alert("message:" + massage + "suggestions: " + suggestions + "warning: "+warning)
     }
     else {
         score = dataPost.score;
-        const message = dataPost.message;
-        alert("message:" + message )
+        const message = dataPost.massage;
+       alert("message:" + massage )
     }
 
     progressPassword.value = score;
