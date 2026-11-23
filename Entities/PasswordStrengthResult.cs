@@ -9,7 +9,7 @@ namespace Entities
         
             public int Score { get; set; }
 
-            public string Message { get; set; } = "";
+            public string Massage { get; set; } = "";
 
             public string? Warning { get; set; }
 

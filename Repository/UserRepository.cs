@@ -2,94 +2,66 @@
 using System.Text.Json;
 
 
-
+using Microsoft.EntityFrameworkCore;
 namespace Repository
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
-        public UserDetails? GetUserFromFile(int id)
-        {
-            using (StreamReader reader = System.IO.File.OpenText("file.txt"))
-            {
-                string? currentUserInFile;
-                while ((currentUserInFile = reader.ReadLine()) != null)
-                {
-                    UserDetails? user = JsonSerializer.Deserialize<UserDetails>(currentUserInFile);
-                    if (user.UserId == id)
-                        return user;
 
-                }
-                //When no user has this id
-                return null;
-            }
+        private readonly storeDBContext _context;
+        public UserRepository(storeDBContext context)
+        {
+            _context = context;
+        }
+      
+
+        public async Task<User?> GetUserFromDb(int id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
+
+        public async Task<bool> UniqueEmail(string email)
+        {
+            return !await _context.Users.AnyAsync(u => u.Email == email);
+        }
+      
+        async public Task InsertUserToDb(User user)
+        {
+            _context.Users.Add(user);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<int>   UserExistsInDb(LoginDetails loginDetails)
+        {
+            return await _context.Users
+                  .Where(u => u.Email == loginDetails.Email && u.Password == loginDetails.Password)
+                  .Select(u => u.Id)
+                  .FirstOrDefaultAsync();
         }
 
 
-        public bool UniqueEmail(string email)
-        {
-            using (StreamReader reader = System.IO.File.OpenText("file.txt"))
-            {
-                string? currentUserInFile;
-                while ((currentUserInFile = reader.ReadLine()) != null)
-                {
-                    UserDetails user = JsonSerializer.Deserialize<UserDetails>(currentUserInFile);
-                    if (user.Email == email)
-                        return false;
 
-                }
-                return true;
-            }
-        }
-        public void InsertUserToFile(UserDetails user)
+        public async Task UpdateUserInDb(int id, User userToUpdate)
         {
-            int numberOfUsers = System.IO.File.ReadLines("file.txt").Count();
-            user.UserId = numberOfUsers + 1;
-            string userJson = JsonSerializer.Serialize(user);
-            System.IO.File.AppendAllText("file.txt", userJson + Environment.NewLine);
-        }
-        public int UserExistsInFile(LoginDetails loginDetails)
-        {
-            using (StreamReader reader = System.IO.File.OpenText("file.txt"))
-            {
-                string? currentUserInFile;
-                while ((currentUserInFile = reader.ReadLine()) != null)
-                {
-                    UserDetails user = JsonSerializer.Deserialize<UserDetails>(currentUserInFile);
-                    if (user.Email == loginDetails.Email && user.Password == loginDetails.Password)
-                        return user.UserId;
-                }
-                return -1;
-            }
-        }
 
 
-        public void UpdateUserInFile(int id, UserDetails userToUpdate)
-        {
-            string textToReplace = string.Empty;
-            using (StreamReader reader = System.IO.File.OpenText("file.txt"))
+       
+            User existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (existingUser == null)
             {
-                string currentUserInFile;
-                while ((currentUserInFile = reader.ReadLine()) != null)
-                {
-                    UserDetails user = JsonSerializer.Deserialize<UserDetails>(currentUserInFile);
-                    if (user.UserId == id)
-                    {
-                        textToReplace = currentUserInFile;
-                        break;
-                    }
-                }
+                return;
             }
 
-            if (textToReplace != string.Empty)
-            {
-                //Keep the id, otherwise the updated user is saved without it
-                userToUpdate.UserId = id;
-                string text = System.IO.File.ReadAllText("file.txt");
-                text = text.Replace(textToReplace, JsonSerializer.Serialize(userToUpdate));
-                System.IO.File.WriteAllText("file.txt", text);
-            }
+            existingUser.First_name = userToUpdate.First_name;
+            existingUser.Last_name = userToUpdate.Last_name;
+            existingUser.Email = userToUpdate.Email;
+            existingUser.Password = userToUpdate.Password;
+
+            await _context.SaveChangesAsync();
         }
 
-
+    
     }
 }
+

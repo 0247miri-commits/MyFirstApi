@@ -7,17 +7,21 @@ using Zxcvbn;
 
 namespace Service
 {
-    public class UserService
+    public class UserService : IUserService
     {
-        private UserRepository _repository = new UserRepository();
-
-        public UserDetails? GetUser(int id)
+        private readonly IUserRepository _repository;
+        // יצירת מופע של UserRepository עם IUserRepository
+        public UserService(IUserRepository repository)
+        {
+            _repository = repository;
+        }
+        public async Task<User?> GetUser(int id)
         {
 
-           return _repository.GetUserFromFile(id);
-            
+            return await _repository.GetUserFromDb(id);
+
         }
-        public bool VaildPassword(UserDetails user)
+        public bool VaildPassword(User user)
         {
             var result = Core.EvaluatePassword(user.Password);
 
@@ -25,17 +29,17 @@ namespace Service
                 return false;
             return true;
         }
-        public bool UniqueUser(UserDetails user)
+        public async Task<bool> UniqueUser(User user)
         {
-            
-            if (!_repository.UniqueEmail(user.Email))
-                return false;
+
+            if (!await _repository.UniqueEmail(user.Email))
+                return    false;
             return true;
-            
+
         }
-        public void InsertUser(UserDetails user)
+        public async Task InsertUser(User user)
         {
-           _repository.InsertUserToFile(user);
+            await   _repository.InsertUserToDb(user);
         }
         public PasswordStrengthResult PasswordStrong(string password)
         {
@@ -44,7 +48,7 @@ namespace Service
                 return new PasswordStrengthResult
                 {
                     Score = result.Score,
-                    Message = "Your password is too easy",
+                    Massage = "Your password is too easy",
                     Warning = result.Feedback.Warning,
                     Suggestions = result.Feedback.Suggestions
 
@@ -53,19 +57,25 @@ namespace Service
             return new PasswordStrengthResult
             {
                 Score = result.Score,
-                Message = "Good Password",
+                Massage = "Good Password",
                 Warning = result.Feedback.Warning,
                 Suggestions = result.Feedback.Suggestions
             };
 
         }
-        public int UserExistsInSystem(LoginDetails user)
+        public async Task<int> UserExistsInSystem(LoginDetails user)
         {
-           return _repository.UserExistsInFile(user);
+            int res = await _repository.UserExistsInDb(user);
+            if (res == default(int))
+                return -1;
+
+
+            else
+                return await _repository.UserExistsInDb(user);
         }
-        public void UpdateUserInSystem(int id,  UserDetails userToUpdate)
+        public async Task UpdateUserInSystem(int id, User userToUpdate)
         {
-            _repository.UpdateUserInFile(id, userToUpdate);
+            await _repository.UpdateUserInDb(id, userToUpdate);
         }
     }
 }
