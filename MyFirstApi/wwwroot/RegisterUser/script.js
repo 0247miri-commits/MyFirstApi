@@ -76,15 +76,15 @@ passwordStrength.addEventListener('click',async (e) => {
     const dataPost = await response.json()
     if (!response.ok) {
         score = dataPost.score;
-       const message = dataPost.message;
+       const massage = dataPost.massage;
         const suggestions = dataPost.suggestions;
         const warning = dataPost.warning;
-        alert("message:" + massage + "suggestions: " + suggestions + "warning: "+warning)
+        alert("massage:" + massage + "suggestions: " + suggestions + "warning: "+warning)
     }
     else {
         score = dataPost.score;
-        const message = dataPost.massage;
-       alert("message:" + massage )
+        const massage = dataPost.massage;
+       alert("massage:" + massage )
     }
 
     progressPassword.value = score;
