@@ -16,9 +16,11 @@ namespace Service
         {
             _repository = repository;
         }
-        public async Task<Product?> GetProduct(int id)
+
+      
+        public async Task<(List<Product> Items, int TotalCount)> GetProducts (int position, int skip, string? desc, int? minPrice, int? maxPrice, int?[] categoryIds)
         {
-            return await _repository.GetProductFromDb(id);
+            return await _repository.getProducts(position, skip, desc, minPrice, maxPrice, categoryIds);
         }
 
 

@@ -3,6 +3,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 namespace Entities;
 
 
@@ -15,7 +16,8 @@ public partial class Order_Item
     public int product_id { get; set; }
 
     public int quantity { get; set; }
-
+    
+    [JsonIgnore]
     public virtual Order order { get; set; }
 
     public virtual Product product { get; set; }

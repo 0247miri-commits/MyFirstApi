@@ -8,6 +8,7 @@ namespace Service
 {
     public class CategoryService : ICategoryService
     {
+
         private readonly ICategoryRepository _repository;
         // יצירת מופע של UserRepository עם IUserRepository
         public CategoryService(ICategoryRepository repository)

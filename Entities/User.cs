@@ -20,5 +20,6 @@ public partial class User
 
     public int Id { get; set; }
 
+
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

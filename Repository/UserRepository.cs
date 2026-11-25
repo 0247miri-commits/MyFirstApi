@@ -3,15 +3,18 @@ using System.Text.Json;
 
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 namespace Repository
 {
     public class UserRepository : IUserRepository
     {
 
         private readonly storeDBContext _context;
-        public UserRepository(storeDBContext context)
+        private readonly ILogger<UserRepository> logger;
+        public UserRepository(storeDBContext context, ILogger<UserRepository> logger)
         {
             _context = context;
+            this.logger = logger;
         }
       
 
@@ -30,6 +33,8 @@ namespace Repository
             _context.Users.Add(user);
 
             await _context.SaveChangesAsync();
+            logger.LogInformation($"New customer registered");
+
         }
 
         public async Task<int>   UserExistsInDb(LoginDetails loginDetails)
@@ -45,8 +50,9 @@ namespace Repository
         public async Task UpdateUserInDb(int id, User userToUpdate)
         {
 
+            logger.LogInformation($"User updates his details");
 
-       
+
             User existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (existingUser == null)
             {
