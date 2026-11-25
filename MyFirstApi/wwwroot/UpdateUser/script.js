@@ -43,12 +43,14 @@ updateButton.addEventListener('click', async () => {
     }
     const dataPost = await JSON.parse(localStorage.getItem('dataPost'))
     const id = dataPost['id']
+    
     const dataPut =
     {
         email: email.value,
         password: psswrd.value,
-        firstName: firstName.value,
-        lastName: lastName.value,
+        First_name: firstName.value,
+        
+        Last_name: lastName.value,
         Id: id,
         // body: "User updated details ",
         // title: "Updating a user"

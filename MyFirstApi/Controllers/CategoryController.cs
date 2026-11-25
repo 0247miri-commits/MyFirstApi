@@ -17,9 +17,11 @@ namespace MyApiProject.Controllers
 
       
             private ICategoryService _service;
-            public CategoryController(ICategoryService categoryService)
+        private readonly ILogger<CategoryController> logger;
+            public CategoryController(ICategoryService categoryService,ILogger<CategoryController> logger)
             {
                 _service = categoryService;
+                  this.logger = logger;
 
             }
 

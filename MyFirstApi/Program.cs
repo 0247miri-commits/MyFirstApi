@@ -1,6 +1,7 @@
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
+using NLog.Web;
 using Repository;
 using Service;
 
@@ -16,6 +17,7 @@ builder.Services.AddOpenApi(options =>
     options.OpenApiVersion = OpenApiSpecVersion.OpenApi3_0;
 });
 //builder.Services.AddOpenApi();
+builder.Host.UseNLog();
 builder.Services.AddControllers();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();

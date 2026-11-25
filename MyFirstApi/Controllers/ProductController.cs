@@ -12,20 +12,20 @@ namespace MyApiProject.Controllers
 
     public class ProductController : ControllerBase
     {
+        private readonly ILogger<ProductController> logger;
         private IProductService _service;
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, ILogger<ProductController> logger)
         {
             _service = productService;
-
+            this.logger = logger;
         }
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> Get(int id)
-        {
-            Product product = await _service.GetProduct(id);
-            if (product != null)
-                return Ok(product);
+        public async Task<ActionResult<Product>> Get(int position, int skip, string? desc, int? minPrice, int? maxPrice, int?[] categoryIds)
+        {(List<Product> Items, int TotalCount)  = await _service.GetProducts(position,skip,desc,minPrice,maxPrice,categoryIds);
+            if (Items.Count>0)
+                return Ok(Items);
             return NotFound("A product hadn't found");
 
         }

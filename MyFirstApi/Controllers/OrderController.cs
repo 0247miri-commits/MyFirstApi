@@ -14,10 +14,11 @@ namespace MyApiProject.Controllers
     public class OrderController : ControllerBase
     {
         private IOrderService _service;
-        public OrderController(IOrderService orderService)
+        private readonly ILogger<OrderController> logger;
+        public OrderController(IOrderService orderService, ILogger<OrderController> logger)
         {
             _service = orderService;
-
+            this.logger = logger;
         }
 
 

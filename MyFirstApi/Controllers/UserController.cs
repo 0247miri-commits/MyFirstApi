@@ -13,11 +13,13 @@ namespace MyApiProject.Controllers
     
     public class UserController : ControllerBase
     {
+        private readonly ILogger<UserController> _logger;
+
         private IUserService _service;
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, ILogger<UserController> logger )
         {
             _service = userService;
-            
+            _logger = logger;
         }
         //Now it is read from the query string (api/User?id=5)
         [HttpGet("{id}")]
