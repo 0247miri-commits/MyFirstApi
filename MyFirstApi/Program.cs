@@ -1,5 +1,6 @@
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
 using Repository;
 using Service;
 
@@ -10,7 +11,11 @@ builder.Services.AddDbContext<storeDBContext>(options =>
         builder.Configuration.GetConnectionString("StoreConnection")));
 // Add services to the container.
 
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.OpenApiVersion = OpenApiSpecVersion.OpenApi3_0;
+});
+//builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();

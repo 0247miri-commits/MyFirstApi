@@ -78,7 +78,7 @@ namespace MyApiProject.Controllers
         [HttpPut("{id}")]
         public async Task Put(int id,[FromBody] User userToUpdate)
         {
-            _service.UpdateUserInSystem(id, userToUpdate);
+            await _service.UpdateUserInSystem(id, userToUpdate);
            
         }
     }
